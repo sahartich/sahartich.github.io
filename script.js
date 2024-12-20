@@ -21,23 +21,23 @@ function trimPhone(phone) {
     // TODO: ERROR HANDLING
 }
 
-async function fetchPort(ip, pattern, address) {
+async function fetchPort(ip, address) {
+    const ip_regex = ip.replace(/\./g,'\\.')
+    const pattern = new RegExp(`(?<=\\D${ip_regex}\\s\\|\\sUser\\sPort:\\s)\\d{1,5}`, 'gm');
+
     try {
-        const response = await fetch(`${address}${ip}`, {
-            signal: AbortSignal.timeout(50000)  // Abort the request if it takes longer than 5 seconds
-        });
+        const response = await fetch(`${address}${ip}`);
         if (!response.ok) {
         // TODO: ERROR HANDLING
             return;
         }
         const data = await response.text();
-        alert(data);
         const res = data.match(pattern);
         if (res === null) {
             // TODO: ERROR HANDLING
             return;
         }
-      return res[res.length-1];
+        return res[res.length-1];
       
 
     } catch (error) {
@@ -46,12 +46,10 @@ async function fetchPort(ip, pattern, address) {
     }
   }
 
-function main(){
+  async function main(){
     const ip_pattern = /^([1-9]\d?|1\d{1,2}|2([0-4]\d)|25[0-5])(\.(0|[1-9]\d?|1\d{1,2}|2([0-4]\d)|25[0-5])){3}$/;
-    const port_pattern = new RegExp(`(?<=\D${ip_pattern}\s\|\sUser\sPort:\s)\d{1,5}`, 'gm');
-    const address = 'https://sahar.org.il/iplog/iplog.php?ip=';
-    const redirect = 'https://forms.fillout.com/t/hFMFdrktXzus?';
-
+    const address = 'https://corsproxy.io/?https://sahar.org.il/iplog/iplog.php?ip=';
+    const redirect = new URL('https://forms.fillout.com/t/hFMFdrktXzus?');
     const url = new URL(window.location.href);
     const params = new URLSearchParams(url.search);
 
@@ -59,7 +57,7 @@ function main(){
         const ip = validateIP(params.get('ip'),ip_pattern);
 
         if (!ip) { return; }
-        const port = fetchPort(ip,port_pattern,address);
+        const port = await fetchPort(ip,address);
 
         if (!port) { return; }
         params.set('ip',`${ip}:${port}`);
@@ -72,7 +70,8 @@ function main(){
     // TODO: ERROR HANDLING
         return;
     }
-    url.search = params.toString();
+    redirect.search = params.toString();
+    window.location.href = redirect.toString();
 }
 
 main();
