@@ -1,7 +1,4 @@
 // Using QueryStrings to get the IP address, then redirecting to fillout.
-// function getParams(){
-//     return params;
-//     }
 
 function validateIP(ip, pattern) {
     
@@ -42,7 +39,6 @@ async function fetchPort(ip, address) {
 
     } catch (error) {
       // TODO: ERROR HANDLING
-      alert(error);
     }
   }
 
