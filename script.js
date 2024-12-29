@@ -43,7 +43,7 @@ async function fetchPort(ip, address) {
   }
 
   async function main(){
-    const IP_PARAMATER = 'IP_Address'
+    const IP_PARAMATER = 'IP_Address';
     const ip_pattern = /^([1-9]\d?|1\d{1,2}|2([0-4]\d)|25[0-5])(\.(0|[1-9]\d?|1\d{1,2}|2([0-4]\d)|25[0-5])){3}$/;
     const address = 'https://corsproxy.io/?https://sahar.org.il/iplog/iplog.php?ip=';
     const redirect = new URL('https://forms.fillout.com/t/hFMFdrktXzus?');
