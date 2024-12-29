@@ -43,20 +43,21 @@ async function fetchPort(ip, address) {
   }
 
   async function main(){
+    const IP_PARAMATER = 'IP Address'
     const ip_pattern = /^([1-9]\d?|1\d{1,2}|2([0-4]\d)|25[0-5])(\.(0|[1-9]\d?|1\d{1,2}|2([0-4]\d)|25[0-5])){3}$/;
     const address = 'https://corsproxy.io/?https://sahar.org.il/iplog/iplog.php?ip=';
     const redirect = new URL('https://forms.fillout.com/t/hFMFdrktXzus?');
     const url = new URL(window.location.href);
     const params = new URLSearchParams(url.search);
 
-    if (params.has('ip')) {
-        const ip = validateIP(params.get('ip'),ip_pattern);
+    if (params.has(IP_PARAMATER)) {
+        const ip = validateIP(params.get(IP_PARAMATER),ip_pattern);
 
         if (!ip) { return; }
         const port = await fetchPort(ip,address);
 
         if (!port) { return; }
-        params.set('ip',`${ip}:${port}`);
+        params.set(IP_PARAMATER,`${ip}:${port}`);
 
     } else if (params.has('phone')) {
         const phone = trimPhone(params.get('phone'));
