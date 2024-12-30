@@ -6,7 +6,6 @@ async function main(){
     const params = new URLSearchParams(url.search);
 
     if (params.has(ip_param)) {
-        alert(params);
         const ip = params.get(ip_param);
         const escaped_ip = ip.replace(/\./g,'\\.');
         const pattern = new RegExp(`(?<=\\D${escaped_ip}\\s\\|\\sUser\\sPort:\\s)\\d{1,5}`, 'gm');
