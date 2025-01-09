@@ -1,0 +1,37 @@
+.loader {
+    width: fit-content;
+    margin: auto;
+    font-size:120px;
+    line-height: 1.5;
+    font-family: system-ui,sans-serif;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #ffad3156;
+    -webkit-text-stroke: 3px #4e4e4e;
+    background: radial-gradient(1.13em at 50% 1.6em, #ff9900 99%, transparent 101%) calc(50% - 1.6em) 0 / 3.2em 100% text,
+    radial-gradient(1.13em at 50% -0.8em, transparent 99%, #ff9900 101%) 50% .8em / 3.2em 100% repeat-x text;
+animation: l9 2s linear infinite;
+  }
+  .loader:before {
+    content: "מחפש פורט";
+  }
+  @keyframes l9 {
+    to {background-position: calc(50% + 1.6em) 0,calc(50% + 3.2em) .8em}
+  }
+
+  .img {
+    /* padding-left: 75px; */
+    padding-top: 100px;
+    display: block;
+    width: fit-content;
+    margin: auto;
+  }
+
+  @media only screen and (max-width: 600px) {
+    .img {
+            padding-left: 15px;
+    }
+    .loader {
+        font-size: 70px;
+    }
+  }
