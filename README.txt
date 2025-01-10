@@ -1,5 +1,5 @@
 Current values that should be kept up-to-date as they may possibly be altered: 
-formURL --- https://forms.fillout.com/t/hFMFdrktXzus
+formURL --- https://forms.fillout.com/t/ihmcrWb6kkus
 nickname_prompt --- אנא רשמו שם או כינוי
 age_prompt --- על מנת שאוכל להעניק לך מענה מותאם, אנא הקלד/י את גילך (ספרות בלבד)
 bot_name --- מענה אוטומטי
