@@ -2,7 +2,7 @@
     display:block;
     text-align: center;
     margin: auto;
-    font-size:60px;
+    font-size:90px;
     line-height: 1.5;
     font-family: system-ui,sans-serif;
     font-weight: bold;
@@ -21,8 +21,8 @@ animation: l9 2s linear infinite;
   }
 
   .img {
-    /* padding-left: 75px; */
     padding-top: 100px;
+    padding-bottom: 50px;
     display: block;
     width: fit-content;
     margin: auto;
