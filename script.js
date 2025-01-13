@@ -78,7 +78,6 @@ async function getPort(ip){
         const data = await response.text();
         const res = data.match(pattern);
         const port = res[res.length-1];
-        alert(port);
         return port;
     } catch (e) {
         console.log('Could not retrieve Port address');
@@ -128,7 +127,6 @@ async function main() {
         'phone_number': authenticated_data?.personalInfo?.contactInfo[0]?.phone || '',
         'port': port || '',
     });
-    alert(params);
     window.location.href = `${baseUrl}?${params.toString()}`;
 }
 
