@@ -94,7 +94,6 @@ async function getPort(ip, cors_url){
 }
 
 async function main() {
-    alert('success234');
     const form_url = "https://forms.fillout.com/t/ihmcrWb6kkus";
     const cors_url = "https://corsproxy.io/?https://sahar.org.il/iplog/iplog.php?ip=";
 
