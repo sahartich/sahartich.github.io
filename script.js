@@ -59,8 +59,8 @@ async function conversationContentManipulation(chat) {
         if (!(chat[i]?.source === 'agent')) {
             continue;
         }
-        if  (!(chat[i]?.by?.includes(data.heb.bot_name) || chat[i]?.by === data.arb.bot_name)){
-            if (start_time === undefined){
+        if  (!(chat[i]?.by?.includes(data.heb.bot_name) || chat[i]?.by === data.arb.bot_name)) {
+            if (start_time === undefined) {
                 start_time = await dateManipulation(chat[i]?.time);
                 start_time = start_time.formatted_time;
                 total_time = Math.floor((chat[chat.length - 1]?.time - chat[i]?.time) / 60000);
@@ -74,7 +74,7 @@ async function conversationContentManipulation(chat) {
             age = chat[i+1]?.text || '';
         } 
     }
-    return { 'nickname': nickname, 'age': age, 'agent_reply_time': start_time, 'chat_total_time': total_time }
+    return { 'nickname': nickname, 'age': age, 'agent_reply_time': start_time, 'chat_total_time': total_time };
 }
 
 async function getPort(ip, cors_url){
@@ -115,7 +115,7 @@ async function main() {
     }
 
     const chat_start_datetime = await dateManipulation(visitor_info?.visitStartTime || '');
-    const chat_content_vars = await conversationContentManipulation(chat_transcript?.lines || [],);
+    const chat_content_vars = await conversationContentManipulation(chat_transcript?.lines || []);
 
     const params = new URLSearchParams({
         'agent_name':  chatting_agent_info?.agentName || '',
