@@ -108,7 +108,7 @@ async function main() {
     let skill = engagement_info?.skill;
     let port = undefined;
 
-    if (skill?.toLowerCase().includes("whatsapp")){
+    if (skill?.toLowerCase().includes("whatsapp") || skill?.toLowerCase().includes("mobile")){
         skill = 'WhatsApp';
     } else if (visitor_info?.IpAddress) {
         skill = 'Web';
