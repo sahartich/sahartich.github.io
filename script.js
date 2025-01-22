@@ -110,9 +110,13 @@ async function main() {
 
     if (skill?.toLowerCase().includes("whatsapp")){
         skill = 'WhatsApp';
-    } else {
+    } else if (visitor_info?.IpAddress) {
         skill = 'Web';
-        port = await getPort(visitor_info?.IpAddress, cors_url);
+        port = await getPort(visitor_info.IpAddress, cors_url);
+    }
+    else {
+        skill = 'Web';
+        console.log('WARNING: visitorInfo has no IpAddress field');
     }
 
     const chat_start_datetime = await dateManipulation(visitor_info?.visitStartTime || '');
