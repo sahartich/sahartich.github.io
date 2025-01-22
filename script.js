@@ -60,7 +60,7 @@ async function conversationContentManipulation(chat) {
         if (!(chat[i]?.source === 'agent')) {
             continue;
         }
-        if  (!(chat[i]?.by?.includes(data.heb.bot_name) || chat[i]?.by === data.arb.bot_name)) {
+        if  (!(chat[i]?.by?.includes(data.heb.bot_name) || chat[i]?.by === data.arb.bot_name1 || chat[i]?.by === data.arb.bot_name2)) {
             if (start_time === undefined) {
                 start_time = await dateManipulation(chat[i]?.time);
                 start_time = start_time.formatted_time;
@@ -94,7 +94,7 @@ async function getPort(ip, cors_url){
 }
 
 async function main() {
-    alert('success1');
+    alert('success234');
     const form_url = "https://forms.fillout.com/t/ihmcrWb6kkus";
     const cors_url = "https://corsproxy.io/?https://sahar.org.il/iplog/iplog.php?ip=";
 
