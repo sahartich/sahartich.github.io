@@ -1,12 +1,12 @@
-Current values that should be kept up-to-date as they may possibly be altered: 
-formURL --- https://forms.fillout.com/t/ihmcrWb6kkus
-nickname_prompt --- אנא רשמו שם או כינוי
-age_prompt --- על מנת שאוכל להעניק לך מענה מותאם, אנא הקלד/י את גילך (ספרות בלבד)
-bot_name --- מענה אוטומטי
-cors_address --- https://corsproxy.io/?https://sahar.org.il/iplog/iplog.php?ip=
+THIS CODE WAS WRITTEN AND IS CURRENTLY MAINTAINED BY SAHAR TICHOVER BUT IS OPEN SOURCE
+
+----------------------
+
+all parameters that must be kept up-to-date are listed in the config.json file except for:
+form_url and cors_url which are found inside the main function of the script.js file
 
 Please note:
-regarding bot_name, it must contain its' text, it doesn't have to match it exactly
+regarding bot_name, in hebrew it must contain its' text, in arabic it must equal it
 regarding age_prompt, there is also an interactive selection-based age prompt when accessing from some platforms
 
 ----------------------

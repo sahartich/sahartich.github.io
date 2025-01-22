@@ -41,52 +41,60 @@ async function dateManipulation(raw_datetime) {
 }
 
 async function conversationContentManipulation(chat) {
-    const nickname_question = 'אנא רשמו שם או כינוי';
-    const age_question = `על מנת שאוכל להעניק לך מענה מותאם, אנא הקלד/י את גילך (ספרות בלבד)`;
-    const automatic_reply = 'מענה אוטומטי';
-
+    try {
+        const response = await fetch('config.json');
+        var data = await response.text();
+    } catch (e) {
+        console.log(`Error:${e}, could not fetch port website`);
+    }
     let nickname = undefined;
     let age = undefined;
     let start_time = undefined;
     let total_time = undefined;
 
     for (let i = 0; i < chat.length - 1; i++) {
-        console.log(chat[i]);
-        if (chat[i]?.text === nickname_question && chat[i]?.source === 'agent' && chat[i]?.by?.includes(automatic_reply) && chat[i+1]?.source === 'visitor' && nickname === undefined){
+        if (nickname && age && start_time) {
+            break;
+        }
+        if (!(chat[i]?.source === 'agent')) {
+            continue;
+        }
+        if  (!(chat[i]?.by?.includes(data.heb.bot_name) || chat[i]?.by === data.arb.bot_name)){
+            if (start_time === undefined){
+                start_time = await dateManipulation(chat[i]?.time);
+                start_time = start_time.formatted_time;
+                total_time = Math.floor((chat[chat.length - 1]?.time - chat[i]?.time) / 60000);
+            }
+            continue;
+        }
+        if ((chat[i]?.text === data.heb.nickname_prompt || chat[i]?.text === data.arb.nickname_prompt) && nickname === undefined) {
             nickname = chat[i+1]?.text || '';
         } 
-        if ((chat[i]?.type === 'richContent' || chat[i]?.text === age_question) && chat[i]?.source === 'agent' && chat[i]?.by?.includes(automatic_reply) && chat[i+1]?.source === 'visitor' && nickname !== undefined && age === undefined){
+        if ((chat[i]?.type === 'richContent' || chat[i]?.text === data.heb.age_prompt || chat[i]?.text === data.arb.age_prompt) && nickname !== undefined && age === undefined) {
             age = chat[i+1]?.text || '';
         } 
-        if (chat[i]?.source === 'agent' && !chat[i]?.by?.includes(automatic_reply) && start_time === undefined){
-            start_time = await dateManipulation(chat[i]?.time);
-            start_time = start_time.formatted_time;
-            total_time = Math.floor((chat[chat.length - 1]?.time - chat[i]?.time) / 60000);
-        }
     }
     return { 'nickname': nickname, 'age': age, 'agent_reply_time': start_time, 'chat_total_time': total_time }
 }
 
-async function getPort(ip){
-    const cors = 'https://corsproxy.io/?https://sahar.org.il/iplog/iplog.php?ip=';
+async function getPort(ip, cors_url){
+    const escaped_ip = ip.replace(/\./g,'\\.');
+    const pattern = new RegExp(`(?<=\\D${escaped_ip}\\s\\|\\sUser\\sPort:\\s)\\d{1,5}`, 'gm');
     try {
-        const escaped_ip = ip.replace(/\./g,'\\.');
-        const pattern = new RegExp(`(?<=\\D${escaped_ip}\\s\\|\\sUser\\sPort:\\s)\\d{1,5}`, 'gm');
-        const response = await fetch(`${cors}${ip}`, {
+        const response = await fetch(`${cors_url}${ip}`, {
             signal: AbortSignal.timeout(10000),
             });
-        const data = await response.text();
-        const res = data.match(pattern);
-        const port = res[res.length-1];
-        return port;
+        var data = await response.text();
     } catch (e) {
-        console.log('Could not retrieve Port address');
+        console.log(`Error:${e}, could not fetch port website`);
     }
-    return undefined;
+    const res = data.match(pattern);
+    return res?.[res.length-1] || 'no port found';
 }
 
 async function main() {
-    const baseUrl = 'https://forms.fillout.com/t/ihmcrWb6kkus';
+    const form_url = "https://forms.fillout.com/t/ihmcrWb6kkus";
+    const cors_url = "https://corsproxy.io/?https://sahar.org.il/iplog/iplog.php?ip=";
 
     const visitor_info = await getVars('visitorInfo');
     const chatting_agent_info = await getVars('chattingAgentInfo');
@@ -101,14 +109,13 @@ async function main() {
 
     if (skill?.toLowerCase().includes("whatsapp")){
         skill = 'WhatsApp';
-    }
-    else {
+    } else {
         skill = 'Web';
-        port = await getPort(visitor_info?.IpAddress);
+        port = await getPort(visitor_info?.IpAddress, cors_url);
     }
 
     const chat_start_datetime = await dateManipulation(visitor_info?.visitStartTime || '');
-    const chat_content_vars = await conversationContentManipulation(chat_transcript?.lines || '',);
+    const chat_content_vars = await conversationContentManipulation(chat_transcript?.lines || [],);
 
     const params = new URLSearchParams({
         'agent_name':  chatting_agent_info?.agentName || '',
@@ -127,7 +134,7 @@ async function main() {
         'phone_number': authenticated_data?.personalInfo?.contactInfo[0]?.phone || '',
         'port': port || '',
     });
-    window.location.href = `${baseUrl}?${params.toString()}`;
+    window.location.href = `${form_url}?${params.toString()}`;
 }
 
 window.onload = main;
