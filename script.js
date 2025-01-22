@@ -42,8 +42,9 @@ async function dateManipulation(raw_datetime) {
 
 async function conversationContentManipulation(chat) {
     try {
-        const response = await fetch('config.json');
-        var data = await response.text();
+        const response = await fetch('/config.json');
+        var data = await response.json();
+        console.log(data);
     } catch (e) {
         console.log(`Error:${e}, could not fetch port website`);
     }
@@ -93,6 +94,7 @@ async function getPort(ip, cors_url){
 }
 
 async function main() {
+    alert('success1');
     const form_url = "https://forms.fillout.com/t/ihmcrWb6kkus";
     const cors_url = "https://corsproxy.io/?https://sahar.org.il/iplog/iplog.php?ip=";
 
@@ -115,7 +117,7 @@ async function main() {
     }
 
     const chat_start_datetime = await dateManipulation(visitor_info?.visitStartTime || '');
-    const chat_content_vars = await conversationContentManipulation(chat_transcript?.lines || []);
+    const chat_content_vars = await conversationContentManipulation(chat_transcript?.lines || ['']);
 
     const params = new URLSearchParams({
         'agent_name':  chatting_agent_info?.agentName || '',
